@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Pokebuy | Pokémon Card Store</title>
+
+<style>
+
+/* ===== GLOBAL ===== */
+*{ box-sizing:border-box; }
+
+body{
+    margin:0;
+    font-family:Arial, sans-serif;
+    background:#ffffff;
+    color:#222;
+}
+
+/* ===== HEADER ===== */
+header{
+    text-align:center;
+    padding:22px;
+    background:#fafafa;
+    border-bottom:1px solid #ddd;
+}
+
+header h1{
+    margin:0;
+    color:#e74c3c;
+}
+
+/* ===== SEARCH ===== */
+.search-box{
+    text-align:center;
+    padding:18px;
+}
+
+.search-box input{
+    width:100%;
+    max-width:320px;
+    padding:10px;
+    border-radius:25px;
+    border:1px solid #ccc;
+}
+
+/* ===== GRID ===== */
+.container{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(170px,1fr));
+    gap:15px;
+    padding:15px;
+}
+
+/* ===== CARD ===== */
+.card{
+    background:#f5f5f5;
+    padding:10px;
+    border-radius:12px;
+    text-align:center;
+    box-shadow:0 4px 8px rgba(0,0,0,0.12);
+    transition:0.2s;
+}
+
+.card:hover{
+    transform:translateY(-4px);
+}
+
+.card img{
+    width:100%;
+    height:210px;
+    object-fit:cover;
+    border-radius:8px;
+}
+
+.price{
+    font-weight:bold;
+    color:#e67e22;
+    margin:6px 0;
+}
+
+/* ===== BUTTONS ===== */
+.buttons{
+    display:flex;
+    gap:6px;
+    justify-content:center;
+    flex-wrap:wrap;
+}
+
+.btn{
+    padding:6px 10px;
+    font-size:12px;
+    border-radius:18px;
+    color:white;
+    text-decoration:none;
+}
+
+.whatsapp{ background:#25D366; }
+.telegram{ background:#0088cc; }
+.discord{ background:#5865F2; }
+
+/* ===== FOOTER ===== */
+footer{
+    text-align:center;
+    padding:20px;
+    border-top:1px solid #ddd;
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+<h1>🔥 Pokebuy 🔥</h1>
+<p>Buy Pokémon Cards on WhatsApp • Telegram • Discord</p>
+<p><b>Discord:</b> TRIGUU (@sidefoldgamer)</p>
+</header>
+
+<!-- SEARCH -->
+<div class="search-box">
+<input type="text" id="search" placeholder="Search cards..." onkeyup="searchCards()">
+</div>
+
+<!-- CARDS -->
+<div class="container" id="cardContainer"></div>
+
+<footer>
+© 2026 Pokebuy | Created By Preet <br><br>
+<a href="terms.html">Terms & Conditions</a>
+</footer>
+
+
+
+<script>
+
+/* ===== CONTACT INFO ===== */
+const phone = "919727850503";
+const telegramUser = "preetcards";
+const discordLink = "https://discord.com/users/sidefoldgamer";
+
+
+/* ===== 25 CARDS ===== */
+const cards = [
+
+/* Rare ₹199 */
+{name:"Charizard GX",price:"₹199",img:"https://images.pokemontcg.io/sm35/20_hires.png"},
+{name:"Pikachu VMAX",price:"₹199",img:"https://images.pokemontcg.io/swsh4/44_hires.png"},
+{name:"Mewtwo EX",price:"₹199",img:"https://images.pokemontcg.io/xy12/52_hires.png"},
+{name:"Rayquaza VMAX",price:"₹199",img:"https://images.pokemontcg.io/swsh7/110_hires.png"},
+{name:"Umbreon VMAX",price:"₹199",img:"https://images.pokemontcg.io/swsh7/95_hires.png"},
+{name:"Gengar EX",price:"₹199",img:"https://images.pokemontcg.io/xy4/34_hires.png"},
+{name:"Lugia EX",price:"₹199",img:"https://images.pokemontcg.io/bw7/102_hires.png"},
+{name:"Darkrai GX",price:"₹199",img:"https://images.pokemontcg.io/sm3/88_hires.png"},
+{name:"Blastoise V",price:"₹199",img:"https://images.pokemontcg.io/swsh2/31_hires.png"},
+{name:"Snorlax VMAX",price:"₹199",img:"https://images.pokemontcg.io/swsh1/142_hires.png"},
+
+/* Common ₹79 */
+{name:"Bulbasaur",price:"₹79",img:"https://images.pokemontcg.io/base1/44_hires.png"},
+{name:"Charmander",price:"₹79",img:"https://images.pokemontcg.io/base1/46_hires.png"},
+{name:"Squirtle",price:"₹79",img:"https://images.pokemontcg.io/base1/63_hires.png"},
+{name:"Pidgey",price:"₹79",img:"https://images.pokemontcg.io/base1/57_hires.png"},
+{name:"Rattata",price:"₹79",img:"https://images.pokemontcg.io/base1/61_hires.png"},
+{name:"Caterpie",price:"₹79",img:"https://images.pokemontcg.io/base1/45_hires.png"},
+{name:"Weedle",price:"₹79",img:"https://images.pokemontcg.io/base1/69_hires.png"},
+{name:"Zubat",price:"₹79",img:"https://images.pokemontcg.io/base1/70_hires.png"},
+{name:"Meowth",price:"₹79",img:"https://images.pokemontcg.io/base1/56_hires.png"},
+{name:"Psyduck",price:"₹79",img:"https://images.pokemontcg.io/base1/53_hires.png"},
+{name:"Machop",price:"₹79",img:"https://images.pokemontcg.io/base1/52_hires.png"},
+{name:"Geodude",price:"₹79",img:"https://images.pokemontcg.io/base1/47_hires.png"},
+{name:"Abra",price:"₹79",img:"https://images.pokemontcg.io/base1/43_hires.png"},
+{name:"Gastly",price:"₹79",img:"https://images.pokemontcg.io/base1/50_hires.png"},
+{name:"Eevee",price:"₹79",img:"https://images.pokemontcg.io/sm12/101_hires.png"}
+
+];
+
+
+/* ===== DISPLAY ===== */
+function displayCards(list){
+const container=document.getElementById("cardContainer");
+container.innerHTML="";
+
+list.forEach(card=>{
+const msg=encodeURIComponent(`Hi, I want to buy ${card.name} for ${card.price}`);
+
+container.innerHTML+=`
+<div class="card">
+<img src="${card.img}">
+<h4>${card.name}</h4>
+<div class="price">${card.price}</div>
+
+<div class="buttons">
+<a class="btn whatsapp" target="_blank" href="https://wa.me/${phone}?text=${msg}">WhatsApp</a>
+<a class="btn telegram" target="_blank" href="https://t.me/${telegramUser}?text=${msg}">Telegram</a>
+<a class="btn discord" target="_blank" href="${discordLink}">Discord</a>
+</div>
+</div>
+`;
+});
+}
+
+
+/* ===== SEARCH ===== */
+function searchCards(){
+const val=document.getElementById("search").value.toLowerCase();
+displayCards(cards.filter(c=>c.name.toLowerCase().includes(val)));
+}
+
+displayCards(cards);
+
+</script>
+
+</body>
+</html>
